@@ -1,4 +1,4 @@
-<%- include("header.ejs") %>
+<%- include("partials/header.ejs") %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +7,20 @@
     <title>To-do List</title>
 </head>
 <body>
+    <h1><%=day%>, <%=month%> <%=date%></h1> 
+
+    <% if(locals.activities){ %>
+            <% for(const activity of Object.keys(activities)){ %>
+                <p><%=activity %></p>
+            <%} %>
+    <%} %>
+        
     <form action = '/submit' method = "POST">
-        <input type = "text" id = "activity" name = "activity">
+        <input type = "text" name = "activity">
     </form>
+
     <!--footer-->
-    <%- include("footer.ejs")%>
+    <%- include("partials/footer.ejs")%>
 </body>
 
 </html>
