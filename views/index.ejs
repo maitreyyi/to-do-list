@@ -1,0 +1,17 @@
+<%- include("header.ejs") %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+</head>
+<body>
+    <form action = '/submit' method = "POST">
+        <input type = "text" id = "activity" name = "activity">
+    </form>
+    <!--footer-->
+    <%- include("footer.ejs")%>
+</body>
+
+</html>
