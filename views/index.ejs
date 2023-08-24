@@ -1,26 +1,42 @@
-<%- include("partials/header.ejs") %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
-    <h1><%=day%>, <%=month%> <%=date%></h1> 
-
-    <% if(locals.activities){ %>
-            <% for(const activity of Object.keys(activities)){ %>
-                <p><%=activity %></p>
+    <!--navigation bar-->
+    <div class="container">
+        <header class="d-flex justify-content-center py-3">
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">To-do</a></li>
+            <li class="nav-item"><a href="../completed" class="nav-link">Completed</a></li>
+          </ul>
+        </header>
+    </div>
+    <div class = "container">
+        <ul class="list-group">
+            <% if(locals.activities){ %>
+                <% for(const activity of Object.keys(activities)){ %>
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
+                        <label class="form-check-label" for="firstCheckbox"> <%=activity %></label>
+                    </li>
+                <%} %>
             <%} %>
-    <%} %>
-        
-    <form action = '/submit' method = "POST">
-        <input type = "text" name = "activity">
-    </form>
 
-    <!--footer-->
-    <%- include("partials/footer.ejs")%>
+            <form action = '/submit' method = "POST">
+                <input type = "text" class = "form-control" name = "activity" placeholder="type task">
+            </form>
+            
+        </ul>
+        
+        <!--footer-->
+        <%- include("partials/footer.ejs")%>
+    </div>
+    
 </body>
 
 </html>

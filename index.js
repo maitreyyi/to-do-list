@@ -17,6 +17,7 @@ let month = months[d.getMonth()];
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(port, () => {
+    //activities = {};
     console.log('Server listening on port: ' + port);
 });
 
@@ -26,6 +27,10 @@ app.get('/', (req,res) => {
         date: date,
         month: month,
     });
+});
+
+app.get('/completed', (req,res) => {
+    res.render("completed.ejs");
 });
 
 app.post('/submit', (req,res) => {
