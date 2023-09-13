@@ -14,7 +14,7 @@ let day = days[d.getDay()];
 let date = d.getDate();
 let month = months[d.getMonth()];
 
-mongoose.connect("mongodb+srv://maitres:sinha1212@cluster0.cxffqz5.mongodb.net/todolistDB");
+mongoose.connect("mongodb//127.0.0.1:27017");
 
 const itemsSchema = {
     name: String
