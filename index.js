@@ -1,10 +1,10 @@
 import express from "express";
 import ejs from "ejs";
+import mongoose from "mongoose";
 import bodyParser from "body-parser";
 
 const app = express();
 const port = 3000;
-var activities = {};
 
 const d = new Date();
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -14,6 +14,30 @@ let day = days[d.getDay()];
 let date = d.getDate();
 let month = months[d.getMonth()];
 
+mongoose.connect("mongodb+srv://maitres:sinha1212@cluster0.cxffqz5.mongodb.net/todolistDB");
+
+const itemsSchema = {
+    name: String
+};
+
+const completedSchema = {
+    name: String
+};
+
+const Item = mongoose.model("Item", itemsSchema);
+const Completed = mongoose.model("Completed", completedSchema);
+const item1 = new Item({
+    name: "Welcome to your todo list!"
+});
+const item2 = new Item({
+    name: "Hit the + button to add a new item"
+});
+const item3 = new Item({
+    name: "Check the box to delete an item"
+});
+
+const defaultItems = [item1, item2, item3];
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(port, () => {
@@ -22,28 +46,57 @@ app.listen(port, () => {
 });
 
 app.get('/', (req,res) => {
-    res.render("index.ejs", {
-        day: day, 
-        date: date,
-        month: month,
+    Item.find({}
+    ).then(function(foundItems){
+        //console.log(foundItems);
+        if(foundItems.length === 0){
+            Item.insertMany(defaultItems
+                ).then(function(){
+                    console.log("Data inserted");
+                }).catch(function(error){
+                    console.log(error);
+            });
+            res.redirect("/");
+        }
+        res.render("index.ejs", {
+            day: day, 
+            date: date,
+            month: month,
+            activities: foundItems,
+        });
+    }).catch(function(err){
+        console.log(err);
     });
 });
 
 app.get('/completed', (req,res) => {
-    res.render("completed.ejs");
+    Completed.find({}
+    ).then(function(foundItems){
+        res.render("completed.ejs", {
+            activities: foundItems
+        });
+    }).catch(function(err){
+        console.log(err);
+    })
+
 });
 
 app.post('/submit', (req,res) => {
-    var activity = req.body["activity"];
-    //console.log(activity);
-    
-    activities[activity] = true;
+    const newItem  =  new Item({ name: req.body["activity"] });
+    Item.create(newItem);
 
-    res.render("index.ejs", {
-        day: day, 
-        date: date,
-        month: month,
-        activities: activities,
-    });
+    res.redirect('/');
     
+});
+
+app.post('/delete', (req,res) => {
+    const checkedItemid = req.body.checkbox;
+    Item.findByIdAndRemove(checkedItemid
+    ).then(function(item){
+        const task = new Completed({name: item.name});
+        Completed.create(task);
+        res.redirect('/');
+    }).catch(function(err){
+        console.log(err);
+    });
 });

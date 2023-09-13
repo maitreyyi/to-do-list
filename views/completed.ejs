@@ -19,18 +19,14 @@
 
     <div class = "container">
         <ul class="list-group">
-            <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
-                <label class="form-check-label" for="firstCheckbox">First checkbox</label>
-            </li>
-            <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" value="" id="secondCheckbox">
-                <label class="form-check-label" for="secondCheckbox">Second checkbox</label>
-            </li>
-            <li class="list-group-item">
-                <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckbox">
-                <label class="form-check-label" for="thirdCheckbox">Third checkbox</label>
-            </li>
+            <% if(locals.activities){ %>
+                <% activities.forEach(activity => { %>
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" name = "checkbox" value="<%=activity._id %>" id="firstCheckbox">
+                        <label class="form-check-label" for="firstCheckbox"> <%=activity.name %></label>
+                    </li>
+                <% }); %>
+            <%} %>
         </ul>
         <!--footer-->
         <%- include("partials/footer.ejs")%>

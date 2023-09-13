@@ -20,14 +20,16 @@
         <h4><%=day%>, <%=month%> <%=date%></h4>
         <br>
         <ul class="list-group">
-            <% if(locals.activities){ %>
-                <% for(const activity of Object.keys(activities)){ %>
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
-                        <label class="form-check-label" for="firstCheckbox"> <%=activity %></label>
-                    </li>
-                <% } %>
-            <%} %>
+            <form action = "/delete" method = "post">
+                <% if(locals.activities){ %>
+                    <% activities.forEach(activity => { %>
+                        <li class="list-group-item">
+                            <input class="form-check-input me-1" type="checkbox" onChange = "this.form.submit()" name = "checkbox" value="<%=activity._id %>" id="firstCheckbox">
+                            <label class="form-check-label" for="firstCheckbox"> <%=activity.name %></label>
+                        </li>
+                    <% }); %>
+                <%} %>
+            </form>
 
             <form action = '/submit' method = "POST">
                 <input type = "text" class = "form-control" name = "activity" placeholder="type task">
